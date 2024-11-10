@@ -327,6 +327,7 @@ Partial Class Form1
         ' deleteRowBtn
         ' 
         deleteRowBtn.BackColor = Color.FromArgb(CByte(255), CByte(107), CByte(107))
+        deleteRowBtn.Enabled = False
         deleteRowBtn.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         deleteRowBtn.Location = New Point(51, 370)
         deleteRowBtn.Name = "deleteRowBtn"
@@ -347,6 +348,7 @@ Partial Class Form1
         ' 
         ' deleteRowTxtBox
         ' 
+        deleteRowTxtBox.Enabled = False
         deleteRowTxtBox.Location = New Point(127, 413)
         deleteRowTxtBox.Name = "deleteRowTxtBox"
         deleteRowTxtBox.Size = New Size(26, 23)
@@ -354,6 +356,7 @@ Partial Class Form1
         ' 
         ' leftDeleteBtn
         ' 
+        leftDeleteBtn.Enabled = False
         leftDeleteBtn.Location = New Point(100, 413)
         leftDeleteBtn.Name = "leftDeleteBtn"
         leftDeleteBtn.Size = New Size(21, 23)
@@ -363,6 +366,7 @@ Partial Class Form1
         ' 
         ' rightBtnDelete
         ' 
+        rightBtnDelete.Enabled = False
         rightBtnDelete.Location = New Point(168, 414)
         rightBtnDelete.Name = "rightBtnDelete"
         rightBtnDelete.Size = New Size(19, 23)
