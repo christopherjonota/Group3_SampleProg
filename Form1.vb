@@ -5,253 +5,265 @@ Imports Mysqlx.XDevAPI.Relational
 
 Public Class Form1
 
-    'FOR CONNECTION OF DATABASE TO THIS PROGRAM
-    Dim server As String = "localhost"
-    Dim user As String = "root"
-    Dim database As String = "sample"
-    Dim port As Integer = 3306
-    'String Interpoaltion
-    Dim connectionString As String = $"server={server}; user={user}; database={database};port={port}"
+    'INITIALIZATION
+    Public dataset As New DataSet
+    Private dbConnection As New DatabaseConnection
+    Private Property TablePointer As Integer
+        Get
+            Return Integer.Parse(tablePointerTxtBox.Text)
+        End Get
+        Set(value As Integer)
+            tablePointerTxtBox.Text = value
+        End Set
+    End Property
 
-    ' FUNCTION USED TO CALL CONNECTION TO DATABASE
-    Public Function GetConnection() As MySqlConnection
-        Return New MySqlConnection(connectionString)
-    End Function
+    Private Property RowPointer As Integer
+        Get
+            Return Integer.Parse(RowPointerTxt.Text)
+        End Get
+        Set(value As Integer)
+            RowPointerTxt.Text = value
+        End Set
+    End Property
 
-    'INITIALIZATION OF DATASET
-    Dim dataset As New DataSet
 
-
-
-    ' FOR DISPLAYING THE CONNECTION OF DATABASE TO THE PROGRAM
-    ' BUTTON FOR CONNECTING TO THE DATABASE
-    Private Sub connectDbBtn_Click(sender As Object, e As EventArgs) Handles connectDbBtn.Click
-        Using conn As MySqlConnection = GetConnection()
+    '-------------------DATABASE CONNECTION--------------------
+    '--------------SLIDE 6 / STORING IN DATA SETS---------------
+    Private Sub connectDbBtn_Click(sender As Object, e As EventArgs) Handles btnConnect.Click
+        Using conn = dbConnection.GetConnection()
             Try
                 conn.Open()
-                Dim query As String = "SELECT * FROM PersonalInfo_TB"
-                Dim adapter As New MySqlDataAdapter(query, conn)
-                Dim dataTable As New DataTable
+                Dim query1 = "SELECT * FROM PersonalInfo_TB"
 
-                ' THIS WILL ONLY DISPLAY THE DATABASE TO THE DATABASE VIEW (DATAGRIDVIEW)
-                adapter.Fill(dataTable)
-                DatabaseView.DataSource = dataTable
+                'Data Adapter to retrieve data
+                Dim adapter As New MySqlDataAdapter(query1, conn)
+                adapter.Fill(dataset, "PersonalInfo_TB")
 
+
+
+
+                DataSetView.DataSource = dataset.Tables(0)
                 MessageBox.Show("Succesfully connected")
                 connectionLabel.Text = "Connected"
                 ConnectionProgressBar.Value = 100
-                storeBtn.Enabled = True
+                addTableTextBox.Enabled = True
                 tableNameTxtBox.Enabled = True
                 refreshDbBtn.Enabled = True
+                addTableBtn.Enabled = True
+
+
+                btnAdd.Enabled = True
+                btnDelete.Enabled = True
+                btnEdit.Enabled = True
+
+                btnRowLeft.Enabled = True
+                btnRowRight.Enabled = True
+                btnTableRight.Enabled = True
+                btnTableLeft.Enabled = True
+
+                btnRemoveTable.Enabled = True
+
+                btnConnect.Enabled = False
+
+                TablePointer = 0
+
+                lblTableName.Text = dataset.Tables(TablePointer).TableName
+                tablePointerTxtBox.Text = TablePointer
+
+                'Sets the row pointer of the table to 0
+                RowPointerTxt.Text = 0
             Catch ex As Exception
                 MessageBox.Show("Connection Failed! Try Again!")
             End Try
         End Using
     End Sub
-
-
-    '---------- SLIDE 6 - STORING DATA IN DATA SETS ------------------
-    Private Sub storeBtn_Click(sender As Object, e As EventArgs) Handles storeBtn.Click
-        Using conn As MySqlConnection = GetConnection()
-
-            ' THIS WILL GET THE INPUT OF THE USER FOR THE NAME OF THE DATA TABLE
-            ' String.IsNullOrWhiteSpace - Indicates whether a specified string is null
-            If Not String.IsNullOrWhiteSpace(tableNameTxtBox.Text) Then
-                Try
-                    conn.Open()
-                    Dim query As String = "SELECT * FROM PersonalInfo_TB"
-                    Dim adapter As New MySqlDataAdapter(query, conn)
-                    'adapter.AcceptChangesDuringFill = False
-
-                    ' (Name of Dataset, Identifying name for the data table)
-                    adapter.Fill(dataset, tableNameTxtBox.Text)
-
-
-                    DataSetView.DataSource = dataset.Tables(0)
-                    MessageBox.Show($"Succesfully stored in dataset in {tableNameTxtBox.Text}")
-                    tableNameTxtBox.Clear()
-                    addTableBtn.Enabled = True
-                    showTableBtn.Enabled = True
-                    addRowsBtn.Enabled = True
-                    addTableTextBox.Enabled = True
-                    leftArrowBtn.Enabled = True
-                    rightArrowBtn.Enabled = True
-                    tableNoTextBox.Enabled = True
-                    removeTableBtn.Enabled = True
-                    updateDbBtn.Enabled = True
-                    deleteRowBtn.Enabled = True
-                    leftDeleteBtn.Enabled = True
-                    deleteRowTxtBox.Enabled = True
-                    rightBtnDelete.Enabled = True
-                    leftArrowBtn_Click(sender, e)
-                Catch ex As Exception
-                End Try
-            Else
-                MessageBox.Show("Input Table Name")
-            End If
-
-
-
-
-        End Using
-    End Sub
-    ' ----------------------------------------------------------------
-
+    '----------------------------------------------------------------
+    '
+    '
+    '
     '---------- SLIDE 9 - ACCESSING DATA SETS TABLES    --------------
     Private Sub addTable_Click(sender As Object, e As EventArgs) Handles addTableBtn.Click
+        'Checks for existing table in dataset
+        For Each table As DataTable In dataset.Tables
+            If table.TableName = addTableTextBox.Text Then
+                MsgBox("Table Already Exist")
+                Return
+            End If
+        Next
+
         ' CREATES NEW DATATABLE BASED ON THE INPUT NAME OF THE USER
-        Dim dataTable As New DataTable(addTableTextBox.Text)
+        Try
+            Dim query As String = $"SELECT * FROM {addTableTextBox.Text}"
+            Dim dataTable As New DataTable(addTableTextBox.Text)
 
-        'THIS WILL ADD THE CREATED DATATABLE TO THE DATA SET
-        dataset.Tables.Add(dataTable)
+            Using connection = dbConnection.GetConnection
+                Dim adapter As New MySqlDataAdapter(query, connection)
+                adapter.Fill(dataTable)
+            End Using
 
+            'THIS WILL ADD THE CREATED DATATABLE TO THE DATA SET
+            dataset.Tables.Add(dataTable)
 
-        MessageBox.Show($"Added Table {addTableTextBox.Text} Successfully!")
-        addTableTextBox.Clear()
-        dataTable.Columns.Add("ID", GetType(Integer))
-        dataTable.Columns.Add("Firstname", GetType(String))
-        dataTable.Columns.Add("Lastname", GetType(String))
-        dataTable.Columns.Add("Contact", GetType(String))
-        dataTable.Columns.Add("Email", GetType(String))
-        dataTable.Columns.Add("Sex", GetType(Char))
+            'Updates the table count to sync with the pointer
+            TablePointer = dataset.Tables.Count - 1
+
+            ' Bind the DataTable to the DataGridView
+            DataSetView.DataSource = dataset.Tables(TablePointer)
+
+            lblTableName.Text = dataset.Tables(TablePointer).TableName
+
+            'Resets the row pointer
+            RowPointer = 0
+
+            addTableTextBox.Clear()
+        Catch ex As Exception
+            MessageBox.Show($"Table cannot be fetch from Database{ex.Message}")
+        End Try
     End Sub
-    Private Sub removeTableBtn_Click(sender As Object, e As EventArgs) Handles removeTableBtn.Click
-        MessageBox.Show($"Removed {dataset.Tables(num).TableName} Successfully!")
+    Private Sub removeTableBtn_Click(sender As Object, e As EventArgs) Handles btnRemoveTable.Click
+        If Not dataset.Tables.Count = 0 Then
+            MessageBox.Show($"Removed {dataset.Tables(TablePointer).TableName} from this dataset Successfully!")
 
-        'BASED ON THE TABLE NUMBER INDICATED, IT WILL DELETE THAT TABLE
-        dataset.Tables.Remove(dataset.Tables(num).TableName)
+            'BASED ON THE TABLE NUMBER INDICATED, IT WILL DELETE THAT TABLE
+            dataset.Tables.Remove(dataset.Tables(TablePointer).TableName)
+
+            'Refresh the dataset by showing the last datatable
+            If dataset.Tables.Count = 0 Then
+                DataSetView.DataSource = Nothing
+                lblTableName.Text = "-"
+            ElseIf TablePointer = 0 Then
+                DataSetView.DataSource = dataset.Tables(dataset.Tables.Count - 1)
+                lblTableName.Text = dataset.Tables(TablePointer).TableName
+            Else
+                DataSetView.DataSource = dataset.Tables(TablePointer - 1)
+                TablePointer -= 1
+                lblTableName.Text = dataset.Tables(TablePointer).TableName
+            End If
+        Else
+            MessageBox.Show("There are no tables on this dataset")
+        End If
+
+
     End Sub
 
     '-----------------------------------------------------------------
-
+    '
+    '
+    '
     '-------------- SLIDE 10 - WORKING WITH ROWS    -------------------
-    Private Sub addRowsBtn_Click(sender As Object, e As EventArgs) Handles addRowsBtn.Click
-        ' This will initially create an empty data row
-        Dim newRow As DataRow = dataset.Tables(num).NewRow()
-        ' This will add the empty datarow into the datatable
-        dataset.Tables(num).Rows.Add(newRow)
-
-        ' AcceptChanges() is not called because it will not be reflected to the database
-        'newRow.AcceptChanges()
-
-        MessageBox.Show("Added Successfully")
+    Private Sub addRowsBtn_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+        Dim form As New addForm(Me)
+        form.ShowDialog()
     End Sub
     '-----------------------------------------------------------------
 
     '--- SLIDE 15-16 - ADDING AND DELETING ROWS (connected from SLIDE 10)    ----
-    Private Sub deleteRowBtn_Click(sender As Object, e As EventArgs) Handles deleteRowBtn.Click
+    Private Sub deleteRowBtn_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
         'Checks if there is no rows exist on a data table
-        If dataset.Tables(num).Rows.Count = 0 Then
+        If DataSetView.SelectedRows.Count > 0 Then
+            Dim currentRow As DataRow = dataset.Tables(TablePointer).Rows(RowPointer)
+            ' Mark that row for deletion
+            currentRow.Delete()
+
+            DataSetView.DataSource = Nothing
+            DataSetView.DataSource = dataset.Tables(TablePointer)
+            If Not RowPointer = 0 Then
+                RowPointer -= 1
+            End If
+            updateDatabase()
+        Else
             MessageBox.Show("No records to delete.")
             Return
         End If
-
-        ' If there is an existing rows, this will run
-        Using conn As MySqlConnection = GetConnection()
-            Try
-                conn.Open()
-
-                'Select the data from the table in the database
-                Dim query As String = "SELECT * FROM PersonalInfo_TB"
-                Dim adapter As New MySqlDataAdapter(query, conn)
-
-                ' Selects the selected row number to delete
-                Dim currentRow As DataRow = dataset.Tables(num).Rows(RowNumber)
-                ' Mark that row for deletion
-                currentRow.Delete()
-
-                ' AcceptChanges() is not called because it will not be reflected to the database
-                'currentRow.AcceptChanges()
-
-                RowNumber = dataset.Tables(num).Rows.Count - 1
-                deleteRowTxtBox.Text = RowNumber + 1
-                DataSetView.Rows(RowNumber).DefaultCellStyle.BackColor = Color.Yellow
-            Catch ex As Exception
-                MessageBox.Show($"Error {ex}")
-            End Try
-        End Using
-
     End Sub
     '-----------------------------------------------------------------
-
     '-------------- SLIDE 17 - NAVIGATING THROUGH DATASET    -------------------
-    Dim RowNumber As Integer = 0
-    Private Sub rightBtnDelete_Click(sender As Object, e As EventArgs) Handles rightBtnDelete.Click
+    Private Sub btnRowRight_Click(sender As Object, e As EventArgs) Handles btnRowRight.Click
+        If Not dataset.Tables.Count = 0 Then
+            Dim rowCount = dataset.Tables(TablePointer).Rows.Count
 
-        Dim rowCount As Integer = dataset.Tables(num).Rows.Count - 1
-        If RowNumber < rowCount Then
-            DataSetView.Rows(RowNumber).DefaultCellStyle.BackColor = Color.White
-            RowNumber += 1
-            deleteRowTxtBox.Text = RowNumber + 1
-            DataSetView.Rows(RowNumber).DefaultCellStyle.BackColor = Color.Yellow
+            If RowPointer < rowCount - 1 And Not rowCount = 0 Then
+                RowPointer += 1
+                DataSetView.Rows(RowPointer).Selected = True
+                DataSetView.CurrentCell = DataSetView.Rows(RowPointer).Cells(0)
+            End If
         End If
 
     End Sub
-
-    Private Sub leftDeleteBtn_Click(sender As Object, e As EventArgs) Handles leftDeleteBtn.Click
-        Dim rowCount As Integer = dataset.Tables(num).Rows.Count - 1
-        If RowNumber = 0 Then
-            deleteRowTxtBox.Text = RowNumber + 1
-            DataSetView.Rows(RowNumber).DefaultCellStyle.BackColor = Color.Yellow
-        ElseIf RowNumber <= rowCount Then
-            DataSetView.Rows(RowNumber).DefaultCellStyle.BackColor = Color.White
-            RowNumber -= 1
-            deleteRowTxtBox.Text = RowNumber + 1
-            DataSetView.Rows(RowNumber).DefaultCellStyle.BackColor = Color.Yellow
+    Private Sub btnRowLeft_Click(sender As Object, e As EventArgs) Handles btnRowLeft.Click
+        If Not dataset.Tables.Count = 0 Then
+            Dim rowCount = dataset.Tables(TablePointer).Rows.Count
+            If RowPointer < rowCount And Not RowPointer <= 0 Then
+                RowPointer -= 1
+                DataSetView.Rows(RowPointer).Selected = True
+                DataSetView.CurrentCell = DataSetView.Rows(RowPointer).Cells(0)
+            End If
         End If
     End Sub
-    Private Sub showTableBtn_Click(sender As Object, e As EventArgs) Handles showTableBtn.Click
-        Dim tableNames As String = "Table names in the DataSet: " & Environment.NewLine & Environment.NewLine
-
-        For Each table As DataTable In dataset.Tables
-            tableNames &= table.TableName & Environment.NewLine
-        Next
-
-        MessageBox.Show(tableNames)
-    End Sub
-
-
-
-    Private Sub leftArrowBtn_Click(sender As Object, e As EventArgs) Handles leftArrowBtn.Click
-        If num = 0 Then
-            Dim tableName = dataset.Tables(num).TableName
-            tableNameTxt.Text = tableName
-            tableNoTextBox.Text = num
-            DataSetView.DataSource = dataset.Tables(num)
-        Else
-            num -= 1
-            Dim tableName = dataset.Tables(num).TableName
-            tableNameTxt.Text = tableName
-            tableNoTextBox.Text = num
-            DataSetView.DataSource = dataset.Tables(num)
-        End If
-    End Sub
-    Dim num As Integer = 0
-    Private Sub rightArrowBtn_Click(sender As Object, e As EventArgs) Handles rightArrowBtn.Click
+    Private Sub btnTableRight_Click(sender As Object, e As EventArgs) Handles btnTableRight.Click
         Dim tableCount = dataset.Tables.Count - 1
-        If tableCount = 0 Then
-            Dim tableName = dataset.Tables(num).TableName
-            tableNameTxt.Text = tableName
-            tableNoTextBox.Text = num
-            DataSetView.DataSource = dataset.Tables(num)
+        If TablePointer < tableCount Then
+            If Not TablePointer = tableCount Then
+                TablePointer += 1
+            End If
+            lblTableName.Text = dataset.Tables(TablePointer).TableName
+            tablePointerTxtBox.Text = TablePointer
+            DataSetView.DataSource = dataset.Tables(TablePointer)
 
-        ElseIf num < tableCount Then
-            num += 1
-            Dim tableName = dataset.Tables(num).TableName
-            tableNameTxt.Text = tableName
-            tableNoTextBox.Text = num
-            DataSetView.DataSource = dataset.Tables(num)
+            RowPointer = 0
+            DataSetView.Rows(RowPointer).Selected = True
+            DataSetView.CurrentCell = DataSetView.Rows(RowPointer).Cells(0)
+        End If
+    End Sub
+    Private Sub btnTableLeft_Click(sender As Object, e As EventArgs) Handles btnTableLeft.Click
+        Dim tableCount = dataset.Tables.Count
+
+        If TablePointer < tableCount Then
+            If Not TablePointer = 0 Then
+                TablePointer -= 1
+            End If
+            lblTableName.Text = dataset.Tables(TablePointer).TableName
+            tablePointerTxtBox.Text = TablePointer
+            DataSetView.DataSource = dataset.Tables(TablePointer)
+
+            RowPointer = 0
+            DataSetView.Rows(RowPointer).Selected = True
+            DataSetView.CurrentCell = DataSetView.Rows(RowPointer).Cells(0)
         End If
     End Sub
 
 
+    '-------------- SLIDE 18-19 - UPDATING THE DATABASE WITH THE ADAPTER    -------------------
+    Public Sub updateDatabase()
+        Using conn = dbConnection.GetConnection()
+            Try
+                conn.Open()
+                Dim query = $"SELECT * FROM {dataset.Tables(TablePointer).TableName}"
+                Dim adapter As New MySqlDataAdapter(query, conn)
+                updateCommands(adapter, conn)
+
+                adapter.Update(dataset, dataset.Tables(TablePointer).TableName)
+                'Refresh()
+                MessageBox.Show($"Succesfully updated the dataset")
+            Catch ex As Exception
+                MessageBox.Show($"Eror {ex}")
+            End Try
+
+        End Using
+    End Sub
+
+
+    '-------------- SLIDE 20 - 22   -------------------
     Private Sub updateCommands(adapter As MySqlDataAdapter, conn As MySqlConnection)
-        Dim insertCommand As New MySqlCommand("INSERT INTO PersonalInfo_TB (Firstname, Lastname, Contact, Email, Sex) VALUES (@Firstname, @Lastname, @Contact, @Email, @Sex)", conn)
+        Dim insertCommand As New MySqlCommand("INSERT INTO PersonalInfo_TB (Firstname, Lastname, Contact, Email, Sex) VALUES (@Firstname, @Lastname, @Contact, @Email, @Sex); SELECT LAST_INSERT_ID() AS ID", conn)
         insertCommand.Parameters.Add("@Firstname", MySqlDbType.VarChar, 50, "Firstname")
         insertCommand.Parameters.Add("@Lastname", MySqlDbType.VarChar, 50, "Lastname")
         insertCommand.Parameters.Add("@Contact", MySqlDbType.VarChar, 11, "Contact")
         insertCommand.Parameters.Add("@Email", MySqlDbType.VarChar, 50, "Email")
         insertCommand.Parameters.Add("@Sex", MySqlDbType.VarChar, 1, "Sex")
+
+        '-------------- SLIDE 20 - Using UpdatedRowSource to Map Values to a DataSet   -------------------
+        insertCommand.UpdatedRowSource = UpdateRowSource.FirstReturnedRecord
         adapter.InsertCommand = insertCommand
 
 
@@ -268,42 +280,31 @@ Public Class Form1
         deleteCommand.Parameters.Add("@ID", MySqlDbType.Int32, 0, "ID")
         adapter.DeleteCommand = deleteCommand
 
-
-    End Sub
-    Private Sub updateDbBtn_Click(sender As Object, e As EventArgs) Handles updateDbBtn.Click
-        Using conn As MySqlConnection = GetConnection()
-
-            Try
-                conn.Open()
-                Dim query As String = $"SELECT * FROM PersonalInfo_TB"
-                Dim adapter As New MySqlDataAdapter(query, conn)
-                updateCommands(adapter, conn)
-
-
-
-                'adapter.InsertCommand = New MySqlCommand($"INSERT INTO PersonalInfo_TB (firstname, lastname, contact) VALUES (Null, Null, Null)", conn)
-                adapter.Update(dataset, dataset.Tables(num).TableName)
-                MessageBox.Show($"Succesfully updated the dataset")
-            Catch ex As Exception
-                MessageBox.Show($"Eror {ex}")
-            End Try
-
-        End Using
     End Sub
 
+
+
+    '------------------------------------------------------------------------
+    Private Sub DataSetView_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataSetView.CellClick
+        RowPointer = e.RowIndex
+    End Sub
+
+    ' Not necessary because we use updaterowsourcemap
     Private Sub refreshDbBtn_Click(sender As Object, e As EventArgs) Handles refreshDbBtn.Click
-        Using conn As MySqlConnection = GetConnection()
+        Using conn = dbConnection.GetConnection()
             Try
                 conn.Open()
-                Dim query As String = "SELECT * FROM PersonalInfo_TB"
+                'Clear the datatable
+                dataset.Tables(TablePointer).Clear()
+                Dim query = $"SELECT * FROM {dataset.Tables(TablePointer)}"
                 Dim adapter As New MySqlDataAdapter(query, conn)
-                Dim dataTable As New DataTable
-                adapter.Fill(dataTable)
-                DatabaseView.DataSource = dataTable
+                adapter.Fill(dataset.Tables(TablePointer))
+                RowPointer = 0
+                DataSetView.Rows(RowPointer).Selected = True
+                DataSetView.CurrentCell = DataSetView.Rows(RowPointer).Cells(0)
             Catch ex As Exception
+                MessageBox.Show("There are no tables on this dataset")
             End Try
         End Using
     End Sub
-
-
 End Class

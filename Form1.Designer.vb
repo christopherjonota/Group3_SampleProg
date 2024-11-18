@@ -22,87 +22,57 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        connectDbBtn = New Button()
-        ConnectionProgressBar = New ProgressBar()
-        connectionLabel = New Label()
-        storeBtn = New Button()
+        components = New ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         addTableBtn = New Button()
         addTableTextBox = New TextBox()
         Label3 = New Label()
-        removeTableBtn = New Button()
-        showTableBtn = New Button()
-        addRowsBtn = New Button()
-        leftArrowBtn = New Button()
+        btnRemoveTable = New Button()
+        ImageList1 = New ImageList(components)
+        btnAdd = New Button()
+        btnTableLeft = New Button()
         refreshDbBtn = New Button()
-        rightArrowBtn = New Button()
-        tableNoTextBox = New TextBox()
+        btnTableRight = New Button()
+        tablePointerTxtBox = New TextBox()
         Label5 = New Label()
         Label6 = New Label()
-        updateDbBtn = New Button()
         tableNameTxtBox = New TextBox()
-        tableNameTxt = New Label()
+        lblTableName = New Label()
         Label1 = New Label()
-        Label2 = New Label()
-        DataSetView = New DataGridView()
-        Label8 = New Label()
-        DatabaseView = New DataGridView()
         Label7 = New Label()
-        Label4 = New Label()
-        deleteRowBtn = New Button()
+        btnDelete = New Button()
         Label9 = New Label()
-        deleteRowTxtBox = New TextBox()
-        leftDeleteBtn = New Button()
-        rightBtnDelete = New Button()
+        RowPointerTxt = New TextBox()
+        btnRowLeft = New Button()
+        btnRowRight = New Button()
+        Panel1 = New Panel()
+        Label4 = New Label()
+        Panel3 = New Panel()
+        GroupBox1 = New GroupBox()
+        btnConnect = New Button()
+        ConnectionProgressBar = New ProgressBar()
+        Label2 = New Label()
+        connectionLabel = New Label()
+        DataEntryPanel = New Panel()
+        btnEdit = New Button()
+        DataSetView = New DataGridView()
+        Panel2 = New Panel()
+        Panel4 = New Panel()
+        Panel1.SuspendLayout()
+        Panel3.SuspendLayout()
+        GroupBox1.SuspendLayout()
+        DataEntryPanel.SuspendLayout()
         CType(DataSetView, ComponentModel.ISupportInitialize).BeginInit()
-        CType(DatabaseView, ComponentModel.ISupportInitialize).BeginInit()
+        Panel2.SuspendLayout()
+        Panel4.SuspendLayout()
         SuspendLayout()
-        ' 
-        ' connectDbBtn
-        ' 
-        connectDbBtn.BackColor = Color.FromArgb(CByte(170), CByte(213), CByte(118))
-        connectDbBtn.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        connectDbBtn.Location = New Point(39, 81)
-        connectDbBtn.Name = "connectDbBtn"
-        connectDbBtn.Size = New Size(199, 50)
-        connectDbBtn.TabIndex = 0
-        connectDbBtn.Text = "Connect to Database"
-        connectDbBtn.UseVisualStyleBackColor = False
-        ' 
-        ' ConnectionProgressBar
-        ' 
-        ConnectionProgressBar.Location = New Point(310, 94)
-        ConnectionProgressBar.Name = "ConnectionProgressBar"
-        ConnectionProgressBar.Size = New Size(100, 23)
-        ConnectionProgressBar.TabIndex = 1
-        ' 
-        ' connectionLabel
-        ' 
-        connectionLabel.AutoSize = True
-        connectionLabel.Font = New Font("Comic Sans MS", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        connectionLabel.Location = New Point(327, 120)
-        connectionLabel.Name = "connectionLabel"
-        connectionLabel.Size = New Size(70, 15)
-        connectionLabel.TabIndex = 2
-        connectionLabel.Text = "Disconneted"
-        ' 
-        ' storeBtn
-        ' 
-        storeBtn.BackColor = Color.FromArgb(CByte(137), CByte(176), CByte(174))
-        storeBtn.Enabled = False
-        storeBtn.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        storeBtn.Location = New Point(504, 81)
-        storeBtn.Name = "storeBtn"
-        storeBtn.Size = New Size(236, 50)
-        storeBtn.TabIndex = 3
-        storeBtn.Text = "Store Data in Data Set"
-        storeBtn.UseVisualStyleBackColor = False
         ' 
         ' addTableBtn
         ' 
         addTableBtn.BackColor = Color.FromArgb(CByte(137), CByte(176), CByte(174))
         addTableBtn.Enabled = False
         addTableBtn.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        addTableBtn.Location = New Point(51, 204)
+        addTableBtn.Location = New Point(28, 21)
         addTableBtn.Name = "addTableBtn"
         addTableBtn.Size = New Size(140, 39)
         addTableBtn.TabIndex = 6
@@ -112,7 +82,7 @@ Partial Class Form1
         ' addTableTextBox
         ' 
         addTableTextBox.Enabled = False
-        addTableTextBox.Location = New Point(107, 249)
+        addTableTextBox.Location = New Point(199, 37)
         addTableTextBox.Name = "addTableTextBox"
         addTableTextBox.Size = New Size(100, 23)
         addTableTextBox.TabIndex = 7
@@ -121,93 +91,109 @@ Partial Class Form1
         ' 
         Label3.AutoSize = True
         Label3.Font = New Font("Comic Sans MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label3.Location = New Point(585, 174)
+        Label3.Location = New Point(389, 21)
         Label3.Name = "Label3"
         Label3.Size = New Size(84, 18)
         Label3.TabIndex = 8
         Label3.Text = "Table Name:"
         ' 
-        ' removeTableBtn
+        ' btnRemoveTable
         ' 
-        removeTableBtn.BackColor = Color.FromArgb(CByte(255), CByte(107), CByte(107))
-        removeTableBtn.Enabled = False
-        removeTableBtn.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        removeTableBtn.Location = New Point(303, 375)
-        removeTableBtn.Name = "removeTableBtn"
-        removeTableBtn.Size = New Size(189, 37)
-        removeTableBtn.TabIndex = 9
-        removeTableBtn.Text = "Remove Table"
-        removeTableBtn.UseVisualStyleBackColor = False
+        btnRemoveTable.BackColor = Color.Transparent
+        btnRemoveTable.Enabled = False
+        btnRemoveTable.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        btnRemoveTable.ImageIndex = 5
+        btnRemoveTable.ImageList = ImageList1
+        btnRemoveTable.Location = New Point(931, 10)
+        btnRemoveTable.Name = "btnRemoveTable"
+        btnRemoveTable.Size = New Size(152, 37)
+        btnRemoveTable.TabIndex = 9
+        btnRemoveTable.Text = "Remove Table"
+        btnRemoveTable.TextAlign = ContentAlignment.MiddleRight
+        btnRemoveTable.TextImageRelation = TextImageRelation.ImageBeforeText
+        btnRemoveTable.UseVisualStyleBackColor = False
         ' 
-        ' showTableBtn
+        ' ImageList1
         ' 
-        showTableBtn.BackColor = Color.FromArgb(CByte(137), CByte(176), CByte(174))
-        showTableBtn.Enabled = False
-        showTableBtn.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        showTableBtn.Location = New Point(782, 164)
-        showTableBtn.Name = "showTableBtn"
-        showTableBtn.Size = New Size(189, 34)
-        showTableBtn.TabIndex = 12
-        showTableBtn.Text = "Show Tubols"
-        showTableBtn.UseVisualStyleBackColor = False
+        ImageList1.ColorDepth = ColorDepth.Depth32Bit
+        ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), ImageListStreamer)
+        ImageList1.TransparentColor = Color.Transparent
+        ImageList1.Images.SetKeyName(0, "no-connection.png")
+        ImageList1.Images.SetKeyName(1, "")
+        ImageList1.Images.SetKeyName(2, "save.png")
+        ImageList1.Images.SetKeyName(3, "edit.png")
+        ImageList1.Images.SetKeyName(4, "add-file.png")
+        ImageList1.Images.SetKeyName(5, "trash.png")
+        ImageList1.Images.SetKeyName(6, "close.png")
+        ImageList1.Images.SetKeyName(7, "refresh (1).png")
         ' 
-        ' addRowsBtn
+        ' btnAdd
         ' 
-        addRowsBtn.BackColor = Color.FromArgb(CByte(190), CByte(227), CByte(219))
-        addRowsBtn.Enabled = False
-        addRowsBtn.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        addRowsBtn.Location = New Point(69, 289)
-        addRowsBtn.Name = "addRowsBtn"
-        addRowsBtn.Size = New Size(105, 35)
-        addRowsBtn.TabIndex = 13
-        addRowsBtn.Text = "Add Rows"
-        addRowsBtn.UseVisualStyleBackColor = False
+        btnAdd.BackColor = Color.Transparent
+        btnAdd.Enabled = False
+        btnAdd.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        btnAdd.ImageAlign = ContentAlignment.MiddleRight
+        btnAdd.ImageIndex = 4
+        btnAdd.ImageList = ImageList1
+        btnAdd.Location = New Point(42, 11)
+        btnAdd.Name = "btnAdd"
+        btnAdd.Size = New Size(100, 35)
+        btnAdd.TabIndex = 13
+        btnAdd.Text = "Add"
+        btnAdd.TextImageRelation = TextImageRelation.ImageBeforeText
+        btnAdd.UseVisualStyleBackColor = False
         ' 
-        ' leftArrowBtn
+        ' btnTableLeft
         ' 
-        leftArrowBtn.Enabled = False
-        leftArrowBtn.Location = New Point(330, 170)
-        leftArrowBtn.Name = "leftArrowBtn"
-        leftArrowBtn.Size = New Size(21, 23)
-        leftArrowBtn.TabIndex = 14
-        leftArrowBtn.Text = "<"
-        leftArrowBtn.UseVisualStyleBackColor = True
+        btnTableLeft.Enabled = False
+        btnTableLeft.Location = New Point(292, 20)
+        btnTableLeft.Name = "btnTableLeft"
+        btnTableLeft.Size = New Size(21, 23)
+        btnTableLeft.TabIndex = 14
+        btnTableLeft.Text = "<"
+        btnTableLeft.UseVisualStyleBackColor = True
         ' 
         ' refreshDbBtn
         ' 
-        refreshDbBtn.BackColor = Color.FromArgb(CByte(190), CByte(227), CByte(219))
+        refreshDbBtn.BackColor = Color.Transparent
         refreshDbBtn.Enabled = False
         refreshDbBtn.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        refreshDbBtn.Location = New Point(34, 496)
+        refreshDbBtn.ImageIndex = 7
+        refreshDbBtn.ImageList = ImageList1
+        refreshDbBtn.Location = New Point(831, 9)
         refreshDbBtn.Name = "refreshDbBtn"
-        refreshDbBtn.Size = New Size(175, 40)
+        refreshDbBtn.Size = New Size(94, 40)
         refreshDbBtn.TabIndex = 15
-        refreshDbBtn.Text = "Refresh Database"
+        refreshDbBtn.Text = "Refresh"
+        refreshDbBtn.TextAlign = ContentAlignment.MiddleRight
+        refreshDbBtn.TextImageRelation = TextImageRelation.ImageBeforeText
         refreshDbBtn.UseVisualStyleBackColor = False
         ' 
-        ' rightArrowBtn
+        ' btnTableRight
         ' 
-        rightArrowBtn.Enabled = False
-        rightArrowBtn.Location = New Point(389, 169)
-        rightArrowBtn.Name = "rightArrowBtn"
-        rightArrowBtn.Size = New Size(19, 23)
-        rightArrowBtn.TabIndex = 16
-        rightArrowBtn.Text = ">"
-        rightArrowBtn.UseVisualStyleBackColor = True
+        btnTableRight.Enabled = False
+        btnTableRight.Location = New Point(351, 19)
+        btnTableRight.Name = "btnTableRight"
+        btnTableRight.Size = New Size(19, 23)
+        btnTableRight.TabIndex = 16
+        btnTableRight.Text = ">"
+        btnTableRight.UseVisualStyleBackColor = True
         ' 
-        ' tableNoTextBox
+        ' tablePointerTxtBox
         ' 
-        tableNoTextBox.Enabled = False
-        tableNoTextBox.Location = New Point(357, 170)
-        tableNoTextBox.Name = "tableNoTextBox"
-        tableNoTextBox.Size = New Size(26, 23)
-        tableNoTextBox.TabIndex = 17
+        tablePointerTxtBox.Enabled = False
+        tablePointerTxtBox.Location = New Point(319, 20)
+        tablePointerTxtBox.Name = "tablePointerTxtBox"
+        tablePointerTxtBox.ReadOnly = True
+        tablePointerTxtBox.Size = New Size(26, 23)
+        tablePointerTxtBox.TabIndex = 17
+        tablePointerTxtBox.TextAlign = HorizontalAlignment.Center
         ' 
         ' Label5
         ' 
         Label5.AutoSize = True
         Label5.Font = New Font("Comic Sans MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label5.Location = New Point(266, 173)
+        Label5.Location = New Point(228, 23)
         Label5.Name = "Label5"
         Label5.Size = New Size(58, 18)
         Label5.TabIndex = 18
@@ -217,240 +203,340 @@ Partial Class Form1
         ' 
         Label6.AutoSize = True
         Label6.Font = New Font("Comic Sans MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label6.Location = New Point(17, 254)
+        Label6.Location = New Point(205, 12)
         Label6.Name = "Label6"
         Label6.Size = New Size(84, 18)
         Label6.TabIndex = 19
         Label6.Text = "Table Name:"
         ' 
-        ' updateDbBtn
-        ' 
-        updateDbBtn.BackColor = Color.FromArgb(CByte(170), CByte(213), CByte(118))
-        updateDbBtn.Enabled = False
-        updateDbBtn.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        updateDbBtn.Location = New Point(613, 370)
-        updateDbBtn.Name = "updateDbBtn"
-        updateDbBtn.Size = New Size(219, 47)
-        updateDbBtn.TabIndex = 20
-        updateDbBtn.Text = "Save Changes to Database"
-        updateDbBtn.UseVisualStyleBackColor = False
-        ' 
         ' tableNameTxtBox
         ' 
         tableNameTxtBox.Enabled = False
-        tableNameTxtBox.Location = New Point(771, 108)
+        tableNameTxtBox.Location = New Point(998, 467)
         tableNameTxtBox.Name = "tableNameTxtBox"
         tableNameTxtBox.Size = New Size(125, 23)
         tableNameTxtBox.TabIndex = 21
         ' 
-        ' tableNameTxt
+        ' lblTableName
         ' 
-        tableNameTxt.AutoSize = True
-        tableNameTxt.Font = New Font("Comic Sans MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        tableNameTxt.Location = New Point(675, 173)
-        tableNameTxt.Name = "tableNameTxt"
-        tableNameTxt.Size = New Size(13, 18)
-        tableNameTxt.TabIndex = 23
-        tableNameTxt.Text = "-"
+        lblTableName.AutoSize = True
+        lblTableName.Font = New Font("Comic Sans MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        lblTableName.Location = New Point(479, 20)
+        lblTableName.Name = "lblTableName"
+        lblTableName.Size = New Size(13, 18)
+        lblTableName.TabIndex = 23
+        lblTableName.Text = "-"
         ' 
         ' Label1
         ' 
         Label1.AutoSize = True
         Label1.Font = New Font("Comic Sans MS", 24.0F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
-        Label1.Location = New Point(253, 9)
+        Label1.Location = New Point(330, 9)
         Label1.Name = "Label1"
         Label1.Size = New Size(579, 45)
         Label1.TabIndex = 24
         Label1.Text = "STUDENT MANAGEMENT SYSTEM"
         ' 
-        ' Label2
-        ' 
-        Label2.AutoSize = True
-        Label2.Font = New Font("Comic Sans MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label2.Location = New Point(253, 99)
-        Label2.Name = "Label2"
-        Label2.Size = New Size(51, 18)
-        Label2.TabIndex = 25
-        Label2.Text = "Status:"
-        ' 
-        ' DataSetView
-        ' 
-        DataSetView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataSetView.Location = New Point(230, 204)
-        DataSetView.Name = "DataSetView"
-        DataSetView.Size = New Size(762, 150)
-        DataSetView.TabIndex = 26
-        ' 
-        ' Label8
-        ' 
-        Label8.AutoSize = True
-        Label8.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Bold Or FontStyle.Italic, GraphicsUnit.Point, CByte(0))
-        Label8.Location = New Point(504, 151)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(150, 23)
-        Label8.TabIndex = 27
-        Label8.Text = "DATA SET VIEW"
-        ' 
-        ' DatabaseView
-        ' 
-        DatabaseView.AllowUserToAddRows = False
-        DatabaseView.AllowUserToDeleteRows = False
-        DatabaseView.AllowUserToResizeColumns = False
-        DatabaseView.AllowUserToResizeRows = False
-        DatabaseView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DatabaseView.EditMode = DataGridViewEditMode.EditProgrammatically
-        DatabaseView.Location = New Point(266, 496)
-        DatabaseView.Name = "DatabaseView"
-        DatabaseView.Size = New Size(709, 150)
-        DatabaseView.TabIndex = 28
-        ' 
         ' Label7
         ' 
         Label7.AutoSize = True
         Label7.Font = New Font("Comic Sans MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label7.Location = New Point(771, 81)
+        Label7.Location = New Point(1023, 435)
         Label7.Name = "Label7"
         Label7.Size = New Size(116, 18)
         Label7.TabIndex = 29
         Label7.Text = "Data Table Name:"
         ' 
-        ' Label4
+        ' btnDelete
         ' 
-        Label4.AutoSize = True
-        Label4.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Bold Or FontStyle.Italic, GraphicsUnit.Point, CByte(0))
-        Label4.Location = New Point(534, 456)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(154, 23)
-        Label4.TabIndex = 30
-        Label4.Text = "DATABASE VIEW"
-        ' 
-        ' deleteRowBtn
-        ' 
-        deleteRowBtn.BackColor = Color.FromArgb(CByte(255), CByte(107), CByte(107))
-        deleteRowBtn.Enabled = False
-        deleteRowBtn.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        deleteRowBtn.Location = New Point(51, 370)
-        deleteRowBtn.Name = "deleteRowBtn"
-        deleteRowBtn.Size = New Size(136, 37)
-        deleteRowBtn.TabIndex = 31
-        deleteRowBtn.Text = "Delete Row"
-        deleteRowBtn.UseVisualStyleBackColor = False
+        btnDelete.BackColor = Color.Transparent
+        btnDelete.Enabled = False
+        btnDelete.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        btnDelete.ImageIndex = 5
+        btnDelete.ImageList = ImageList1
+        btnDelete.Location = New Point(168, 11)
+        btnDelete.Name = "btnDelete"
+        btnDelete.Size = New Size(100, 35)
+        btnDelete.TabIndex = 31
+        btnDelete.Text = "Delete"
+        btnDelete.TextAlign = ContentAlignment.MiddleRight
+        btnDelete.TextImageRelation = TextImageRelation.ImageBeforeText
+        btnDelete.UseVisualStyleBackColor = False
         ' 
         ' Label9
         ' 
         Label9.AutoSize = True
         Label9.Font = New Font("Comic Sans MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label9.Location = New Point(42, 416)
+        Label9.Location = New Point(19, 20)
         Label9.Name = "Label9"
         Label9.Size = New Size(48, 18)
         Label9.TabIndex = 32
         Label9.Text = "Row #"
         ' 
-        ' deleteRowTxtBox
+        ' RowPointerTxt
         ' 
-        deleteRowTxtBox.Enabled = False
-        deleteRowTxtBox.Location = New Point(127, 413)
-        deleteRowTxtBox.Name = "deleteRowTxtBox"
-        deleteRowTxtBox.Size = New Size(26, 23)
-        deleteRowTxtBox.TabIndex = 35
+        RowPointerTxt.Enabled = False
+        RowPointerTxt.Location = New Point(104, 17)
+        RowPointerTxt.Name = "RowPointerTxt"
+        RowPointerTxt.ReadOnly = True
+        RowPointerTxt.Size = New Size(26, 23)
+        RowPointerTxt.TabIndex = 35
+        RowPointerTxt.TextAlign = HorizontalAlignment.Center
         ' 
-        ' leftDeleteBtn
+        ' btnRowLeft
         ' 
-        leftDeleteBtn.Enabled = False
-        leftDeleteBtn.Location = New Point(100, 413)
-        leftDeleteBtn.Name = "leftDeleteBtn"
-        leftDeleteBtn.Size = New Size(21, 23)
-        leftDeleteBtn.TabIndex = 33
-        leftDeleteBtn.Text = "<"
-        leftDeleteBtn.UseVisualStyleBackColor = True
+        btnRowLeft.Enabled = False
+        btnRowLeft.Location = New Point(77, 17)
+        btnRowLeft.Name = "btnRowLeft"
+        btnRowLeft.Size = New Size(21, 23)
+        btnRowLeft.TabIndex = 33
+        btnRowLeft.TabStop = False
+        btnRowLeft.Text = "<"
+        btnRowLeft.UseVisualStyleBackColor = True
         ' 
-        ' rightBtnDelete
+        ' btnRowRight
         ' 
-        rightBtnDelete.Enabled = False
-        rightBtnDelete.Location = New Point(168, 414)
-        rightBtnDelete.Name = "rightBtnDelete"
-        rightBtnDelete.Size = New Size(19, 23)
-        rightBtnDelete.TabIndex = 36
-        rightBtnDelete.Text = ">"
-        rightBtnDelete.UseVisualStyleBackColor = True
+        btnRowRight.Enabled = False
+        btnRowRight.Location = New Point(136, 18)
+        btnRowRight.Name = "btnRowRight"
+        btnRowRight.Size = New Size(19, 23)
+        btnRowRight.TabIndex = 36
+        btnRowRight.TabStop = False
+        btnRowRight.Text = ">"
+        btnRowRight.UseVisualStyleBackColor = True
+        ' 
+        ' Panel1
+        ' 
+        Panel1.Controls.Add(Label1)
+        Panel1.Dock = DockStyle.Top
+        Panel1.Location = New Point(0, 0)
+        Panel1.Name = "Panel1"
+        Panel1.Size = New Size(1095, 59)
+        Panel1.TabIndex = 37
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        Label4.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Bold Or FontStyle.Italic, GraphicsUnit.Point, CByte(0))
+        Label4.Location = New Point(479, 21)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(154, 23)
+        Label4.TabIndex = 30
+        Label4.Text = "DATABASE VIEW"
+        ' 
+        ' Panel3
+        ' 
+        Panel3.BackColor = Color.LightBlue
+        Panel3.Controls.Add(GroupBox1)
+        Panel3.Dock = DockStyle.Bottom
+        Panel3.Location = New Point(0, 494)
+        Panel3.Name = "Panel3"
+        Panel3.Size = New Size(1095, 80)
+        Panel3.TabIndex = 37
+        ' 
+        ' GroupBox1
+        ' 
+        GroupBox1.Controls.Add(btnConnect)
+        GroupBox1.Controls.Add(ConnectionProgressBar)
+        GroupBox1.Controls.Add(Label2)
+        GroupBox1.Controls.Add(connectionLabel)
+        GroupBox1.Dock = DockStyle.Fill
+        GroupBox1.Location = New Point(0, 0)
+        GroupBox1.Margin = New Padding(10)
+        GroupBox1.Name = "GroupBox1"
+        GroupBox1.Padding = New Padding(0)
+        GroupBox1.Size = New Size(1095, 80)
+        GroupBox1.TabIndex = 30
+        GroupBox1.TabStop = False
+        GroupBox1.Text = "Database Connection"
+        ' 
+        ' btnConnect
+        ' 
+        btnConnect.BackColor = Color.FromArgb(CByte(170), CByte(213), CByte(118))
+        btnConnect.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        btnConnect.ImageIndex = 1
+        btnConnect.ImageList = ImageList1
+        btnConnect.Location = New Point(42, 25)
+        btnConnect.Name = "btnConnect"
+        btnConnect.Size = New Size(111, 50)
+        btnConnect.TabIndex = 0
+        btnConnect.Text = "Connect"
+        btnConnect.TextAlign = ContentAlignment.MiddleRight
+        btnConnect.TextImageRelation = TextImageRelation.ImageBeforeText
+        btnConnect.UseVisualStyleBackColor = False
+        ' 
+        ' ConnectionProgressBar
+        ' 
+        ConnectionProgressBar.Location = New Point(285, 30)
+        ConnectionProgressBar.Name = "ConnectionProgressBar"
+        ConnectionProgressBar.Size = New Size(100, 23)
+        ConnectionProgressBar.TabIndex = 1
+        ' 
+        ' Label2
+        ' 
+        Label2.AutoSize = True
+        Label2.Font = New Font("Comic Sans MS", 9.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label2.Location = New Point(192, 43)
+        Label2.Name = "Label2"
+        Label2.Size = New Size(51, 18)
+        Label2.TabIndex = 25
+        Label2.Text = "Status:"
+        ' 
+        ' connectionLabel
+        ' 
+        connectionLabel.AutoSize = True
+        connectionLabel.Font = New Font("Comic Sans MS", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        connectionLabel.Location = New Point(297, 56)
+        connectionLabel.Name = "connectionLabel"
+        connectionLabel.Size = New Size(70, 15)
+        connectionLabel.TabIndex = 2
+        connectionLabel.Text = "Disconneted"
+        ' 
+        ' DataEntryPanel
+        ' 
+        DataEntryPanel.BackColor = Color.LightSteelBlue
+        DataEntryPanel.BackgroundImageLayout = ImageLayout.None
+        DataEntryPanel.Controls.Add(btnEdit)
+        DataEntryPanel.Controls.Add(btnAdd)
+        DataEntryPanel.Controls.Add(btnDelete)
+        DataEntryPanel.Dock = DockStyle.Bottom
+        DataEntryPanel.Location = New Point(0, 442)
+        DataEntryPanel.Name = "DataEntryPanel"
+        DataEntryPanel.Size = New Size(1095, 52)
+        DataEntryPanel.TabIndex = 38
+        ' 
+        ' btnEdit
+        ' 
+        btnEdit.BackColor = Color.Transparent
+        btnEdit.Enabled = False
+        btnEdit.Font = New Font("Comic Sans MS", 12.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        btnEdit.ImageIndex = 3
+        btnEdit.ImageList = ImageList1
+        btnEdit.Location = New Point(297, 11)
+        btnEdit.Name = "btnEdit"
+        btnEdit.Size = New Size(100, 35)
+        btnEdit.TabIndex = 32
+        btnEdit.Text = "Edit"
+        btnEdit.TextAlign = ContentAlignment.MiddleRight
+        btnEdit.TextImageRelation = TextImageRelation.ImageBeforeText
+        btnEdit.UseVisualStyleBackColor = False
+        ' 
+        ' DataSetView
+        ' 
+        DataSetView.AllowUserToAddRows = False
+        DataSetView.AllowUserToDeleteRows = False
+        DataSetView.AllowUserToResizeColumns = False
+        DataSetView.AllowUserToResizeRows = False
+        DataSetView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+        DataSetView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells
+        DataSetView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        DataSetView.Dock = DockStyle.Bottom
+        DataSetView.EditMode = DataGridViewEditMode.EditProgrammatically
+        DataSetView.Location = New Point(0, 220)
+        DataSetView.MultiSelect = False
+        DataSetView.Name = "DataSetView"
+        DataSetView.ReadOnly = True
+        DataSetView.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        DataSetView.Size = New Size(1095, 222)
+        DataSetView.TabIndex = 39
+        ' 
+        ' Panel2
+        ' 
+        Panel2.Controls.Add(Label9)
+        Panel2.Controls.Add(btnRowLeft)
+        Panel2.Controls.Add(RowPointerTxt)
+        Panel2.Controls.Add(btnRowRight)
+        Panel2.Controls.Add(Label5)
+        Panel2.Controls.Add(btnTableLeft)
+        Panel2.Controls.Add(btnTableRight)
+        Panel2.Controls.Add(tablePointerTxtBox)
+        Panel2.Controls.Add(Label3)
+        Panel2.Controls.Add(lblTableName)
+        Panel2.Controls.Add(refreshDbBtn)
+        Panel2.Controls.Add(btnRemoveTable)
+        Panel2.Dock = DockStyle.Bottom
+        Panel2.Location = New Point(0, 157)
+        Panel2.Name = "Panel2"
+        Panel2.Size = New Size(1095, 63)
+        Panel2.TabIndex = 40
+        ' 
+        ' Panel4
+        ' 
+        Panel4.Controls.Add(Label4)
+        Panel4.Controls.Add(addTableTextBox)
+        Panel4.Controls.Add(addTableBtn)
+        Panel4.Controls.Add(Label6)
+        Panel4.Dock = DockStyle.Bottom
+        Panel4.Location = New Point(0, 85)
+        Panel4.Name = "Panel4"
+        Panel4.Size = New Size(1095, 72)
+        Panel4.TabIndex = 41
         ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         BackColor = Color.FromArgb(CByte(250), CByte(249), CByte(249))
-        ClientSize = New Size(1095, 672)
-        Controls.Add(rightBtnDelete)
-        Controls.Add(deleteRowTxtBox)
-        Controls.Add(leftDeleteBtn)
-        Controls.Add(Label9)
-        Controls.Add(deleteRowBtn)
-        Controls.Add(Label4)
-        Controls.Add(Label7)
-        Controls.Add(DatabaseView)
-        Controls.Add(Label8)
+        ClientSize = New Size(1095, 574)
+        Controls.Add(Panel4)
+        Controls.Add(Panel2)
         Controls.Add(DataSetView)
-        Controls.Add(Label2)
-        Controls.Add(Label1)
-        Controls.Add(tableNameTxt)
+        Controls.Add(DataEntryPanel)
+        Controls.Add(Panel3)
+        Controls.Add(Label7)
+        Controls.Add(Panel1)
         Controls.Add(tableNameTxtBox)
-        Controls.Add(updateDbBtn)
-        Controls.Add(Label6)
-        Controls.Add(Label5)
-        Controls.Add(tableNoTextBox)
-        Controls.Add(rightArrowBtn)
-        Controls.Add(refreshDbBtn)
-        Controls.Add(leftArrowBtn)
-        Controls.Add(addRowsBtn)
-        Controls.Add(showTableBtn)
-        Controls.Add(removeTableBtn)
-        Controls.Add(Label3)
-        Controls.Add(addTableTextBox)
-        Controls.Add(addTableBtn)
-        Controls.Add(storeBtn)
-        Controls.Add(connectionLabel)
-        Controls.Add(ConnectionProgressBar)
-        Controls.Add(connectDbBtn)
         Name = "Form1"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Form1"
+        Panel1.ResumeLayout(False)
+        Panel1.PerformLayout()
+        Panel3.ResumeLayout(False)
+        GroupBox1.ResumeLayout(False)
+        GroupBox1.PerformLayout()
+        DataEntryPanel.ResumeLayout(False)
         CType(DataSetView, ComponentModel.ISupportInitialize).EndInit()
-        CType(DatabaseView, ComponentModel.ISupportInitialize).EndInit()
+        Panel2.ResumeLayout(False)
+        Panel2.PerformLayout()
+        Panel4.ResumeLayout(False)
+        Panel4.PerformLayout()
         ResumeLayout(False)
         PerformLayout()
     End Sub
-
-    Friend WithEvents connectDbBtn As Button
-    Friend WithEvents ConnectionProgressBar As ProgressBar
-    Friend WithEvents connectionLabel As Label
-    Friend WithEvents storeBtn As Button
     Friend WithEvents addTableBtn As Button
     Friend WithEvents addTableTextBox As TextBox
     Friend WithEvents Label3 As Label
-    Friend WithEvents removeTableBtn As Button
-    Friend WithEvents showTableBtn As Button
-    Friend WithEvents addRowsBtn As Button
-    Friend WithEvents leftArrowBtn As Button
+    Friend WithEvents btnRemoveTable As Button
+    Friend WithEvents btnAdd As Button
+    Friend WithEvents btnTableLeft As Button
     Friend WithEvents refreshDbBtn As Button
-    Friend WithEvents rightArrowBtn As Button
-    Friend WithEvents tableNoTextBox As TextBox
+    Friend WithEvents btnTableRight As Button
+    Friend WithEvents tablePointerTxtBox As TextBox
     Friend WithEvents Label5 As Label
     Friend WithEvents Label6 As Label
-    Friend WithEvents updateDbBtn As Button
     Friend WithEvents tableNameTxtBox As TextBox
-    Friend WithEvents tableNameTxt As Label
+    Friend WithEvents lblTableName As Label
     Friend WithEvents Label1 As Label
-    Friend WithEvents Label2 As Label
-    Friend WithEvents DataSetView As DataGridView
-    Friend WithEvents Label8 As Label
-    Friend WithEvents DatabaseView As DataGridView
     Friend WithEvents Label7 As Label
-    Friend WithEvents Label4 As Label
-    Friend WithEvents deleteRowBtn As Button
+    Friend WithEvents btnDelete As Button
     Friend WithEvents Label9 As Label
-    Friend WithEvents deleteRowTxtBox As TextBox
+    Friend WithEvents RowPointerTxt As TextBox
 
-    Friend WithEvents leftDeleteBtn As Button
-    Friend WithEvents rightBtnDelete As Button
+    Friend WithEvents btnRowLeft As Button
+    Friend WithEvents btnRowRight As Button
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Panel3 As Panel
+    Friend WithEvents btnConnect As Button
+    Friend WithEvents ConnectionProgressBar As ProgressBar
+    Friend WithEvents connectionLabel As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents DataEntryPanel As Panel
+    Friend WithEvents ImageList1 As ImageList
+    Friend WithEvents btnEdit As Button
+    Friend WithEvents DataSetView As DataGridView
+    Friend WithEvents Panel2 As Panel
+    Friend WithEvents Panel4 As Panel
 
 End Class
